@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// We are explicitly telling Prisma to use PostgreSQL
+datasource db {
+  provider = "postgresql"
+}
+
+// THE BOOKING TABLE
+model Booking {
+  id        String   @id @default(cuid())
+  reg       String
+  service   String
+  date      DateTime
+  name      String
+  phone     String
+  status    String   @default("PENDING") // Can be PENDING, CONFIRMED, or COMPLETED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // This ensures no one can double-book the exact same service on the exact same date
+  @@unique([date, service])
+}
